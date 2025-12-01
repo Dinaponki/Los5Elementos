@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Descargar V1.0</title>
+  <meta name="theme-color" content="#07110a">
+  <style>
+    /* Reset simple */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;width:100%;overflow:hidden}
+    body{
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:#dfffe6;
+      background:linear-gradient(180deg,#000000 0%, #021006 30%, #03120a 100%); /* minimal black->dark green */
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+      align-items:stretch;
+      justify-content:flex-start;
+    }
+
+    /* Keep everything inside viewport: no scrollbar. Images scale by viewport height. */
+    header.site-header{
+      padding:18px 16px 6px;
+      z-index:10; /* above overlay */
+      flex:0 0 auto;
+    }
+    header.site-header .site-title{
+      display:block;margin:0 auto;text-align:center;max-width:92vw;
+      /* entrance from top + continuous subtle pulse */
+      animation:slideDownIn .7s cubic-bezier(.2,.9,.3,1) both, pulse 2.6s ease-in-out 0.9s infinite;
+      will-change:transform,opacity;
+    }
+    /* Prevent distortion: force the image to maintain intrinsic aspect ratio and contain within area */
+    header.site-header .site-title img{
+      display:block;width:auto !important; /* override width/height attributes */
+      height:auto !important;
+      max-width:92vw;
+      max-height:22vh; /* keeps title from growing too tall */
+      margin:0 auto;object-fit:contain;image-rendering:auto
+    }
+
+    main.site-main{flex:1 1 auto;display:flex;align-items:center;justify-content:center;padding:18px 24px;z-index:10}
+
+    /* Download button as an anchor for native download support */
+    .download-wrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+
+    /* Button container to hold exact visual layers */
+    .download-btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      text-decoration:none;font-weight:700;padding:14px 34px;border-radius:14px;font-size:1.15rem;min-width:220px;
+      background:linear-gradient(180deg, rgba(38,195,85,0.98) 0%, rgba(22,150,62,0.98) 100%); /* green gradient */
+      color:#ffffff;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,opacity .12s ease;
+      border-radius:12px;position:relative;z-index:1;
+      /* thick white border */
+      outline:6px solid #ffffff; /* use outline so it doesn't affect layout width */
+      /* thin black outer contour */
+      box-shadow: 0 10px 28px rgba(8,20,10,0.6), 0 0 0 2px #000;
+      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+      line-height:1; /* avoid vertical misalignment */
+    }
+
+    /* Inner text layer: white text with crisp black stroke simulated via multiple 1px offsets (no blurring) */
+    .download-btn .btn-text{
+      position:relative;z-index:2;color:#ffffff;font-weight:800;letter-spacing:0.2px;
+      -webkit-text-stroke:0px transparent; /* avoid browser stroke artifacts */
+      text-shadow:
+        -1px -1px 0 #000, 1px -1px 0 #000,
+        -1px 1px 0 #000, 1px 1px 0 #000; /* 1px hard outline */
+      padding:6px 0;display:inline-block;
+    }
+
+    /* Remove weirdness on small screens: slightly reduce shadow and border width */
+    @media (max-width:640px){
+      header.site-header{padding-top:12px}
+      header.site-header .site-title img{max-height:18vh}
+      .download-btn{padding:12px 20px;font-size:1rem;min-width:160px;border-radius:12px;outline-width:5px;box-shadow:0 8px 22px rgba(8,20,10,0.5), 0 0 0 1.5px #000}
+    }
+
+    .download-btn:active{transform:translateY(1px) scale(.998)}
+    .download-btn:focus{outline:none;box-shadow:0 0 0 10px rgba(28,145,76,0.12)}
+
+    .btn-sub{display:block;text-align:center;font-size:.86rem;opacity:.86;color:rgba(223,255,230,0.9)}
+
+    @media (min-width:1400px){
+      header.site-header .site-title img{max-height:28vh}
+    }
+
+    /* Toast */
+    .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:28px;padding:10px 14px;border-radius:10px;background:rgba(0,0,0,0.6);color:#dfffe6;font-size:.95rem;z-index:50;display:none}
+
+    /* Animations */
+    @keyframes slideDownIn{
+      0%{opacity:0;transform:translateY(-30px)}
+      100%{opacity:1;transform:translateY(0)}
+    }
+    @keyframes slideUpIn{
+      0%{opacity:0;transform:translateY(30px)}
+      100%{opacity:1;transform:translateY(0)}
+    }
+    @keyframes pulse{
+      0%{transform:scale(1)}
+      50%{transform:scale(1.025)}
+      100%{transform:scale(1)}
+    }
+
+    /* Make sure no accidental scrollbar due to focus outlines: use outline-offset where needed */
+    a:focus{outline-offset:4px}
+  </style>
+</head>
+<body>
+  <!-- Title image (title.png) must be placed alongside index.html -->
+  <header class="site-header">
+    <div class="site-title" role="img" aria-label="Título del sitio">
+      <img src="title.png" alt="Título" width="1088" height="960">
+    </div>
+  </header>
+
+  <main class="site-main">
+    <!-- The anchor has a download attribute so clicking it downloads the APK file in the same folder -->
+    <div class="download-wrap" style="text-align:center">
+      <a id="downloadLink" class="download-btn" href="Los%205%20Elementos.apk" download="Los 5 Elementos.apk" aria-label="Descargar Los 5 Elementos versión 1.0">
+        <span class="btn-text">Descargar V1.0</span>
+      </a>
+      <div class="btn-sub">Archivo: <strong>Los 5 Elementos.apk</strong></div>
+    </div>
+  </main>
+
+  <div class="bg-overlay" aria-hidden="true"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (function(){
+      const link = document.getElementById('downloadLink');
+      const toast = document.getElementById('toast');
+
+      function showToast(text, timeout=2400){
+        toast.textContent = text; toast.style.display = 'block';
+        clearTimeout(toast._t);
+        toast._t = setTimeout(()=> toast.style.display = 'none', timeout);
+      }
+
+      // Extra compatibility: if browser ignores download attr (e.g., some mobile browsers), fetch the file and trigger download
+      link.addEventListener('click', function(e){
+        const supportsDownload = 'download' in document.createElement('a');
+        if(!supportsDownload){
+          e.preventDefault();
+          const href = this.getAttribute('href');
+          showToast('Preparando la descarga...');
+          fetch(href).then(resp => {
+            if(!resp.ok) throw new Error('Network response was not ok');
+            return resp.blob();
+          }).then(blob => {
+            const blobUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = blobUrl;
+            a.download = this.getAttribute('download') || 'download.apk';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(blobUrl);
+            a.remove();
+            showToast('Descarga iniciada');
+          }).catch(err=>{
+            console.error(err);
+            showToast('No se pudo iniciar la descarga. Abra este enlace y guarde el archivo manualmente.');
+            window.location.href = href;
+          });
+        } else {
+          showToast('La descarga debería comenzar en breve');
+        }
+      });
+
+      // Accessibility: Allow Enter/Space to trigger when focused
+      link.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); this.click(); }
+      });
+
+    })();
+  </script>
+</body>
+</html>
