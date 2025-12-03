@@ -6,128 +6,109 @@
   <title>Descargar V1.0</title>
   <meta name="theme-color" content="#07110a">
   <style>
-    /* Reset simple */
+    /* Reset */
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%;width:100%;overflow:hidden}
     body{
       font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
       color:#dfffe6;
-      background:linear-gradient(180deg,#000000 0%, #021006 30%, #03120a 100%);
+      background:linear-gradient(180deg,#000000 0%, #021006 28%, #03210c 100%);
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      /* layout as grid so the changelog can fill the middle row (1fr) */
-      display:grid;
-      grid-template-rows:auto 1fr auto;
-      row-gap:8px;
-      min-height:100vh;
-      align-items:stretch;
-      justify-content:flex-start;
+      display:flex;align-items:center;justify-content:center;
+      padding:24px;min-height:100vh;
     }
 
-    /* Header/title */
-    header.site-header{
-      padding:18px 16px 6px;
-      z-index:10; /* above overlay */
-      flex:0 0 auto;
-    }
-    header.site-header .site-title{
-      display:block;margin:0 auto;text-align:center;max-width:92vw;
-      animation:slideDownIn .7s cubic-bezier(.2,.9,.3,1) both, pulse 2.6s ease-in-out 0.9s infinite;
-      will-change:transform,opacity;
-    }
-    header.site-header .site-title img{
-      display:block;width:auto !important;height:auto !important;max-width:92vw;max-height:30vh;margin:0 auto;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,0.6));
-    }
-
-    /* Changelog (now read-only and fills available vertical space) */
-    .changelog{
-      margin:6px auto 0;
-      width:88vw;
-      text-align:left;
-      color:rgba(223,255,230,0.95);
-      font-size:0.95rem;
-      line-height:1.35;
-      padding:12px 16px;
-      border-radius:8px;
-      opacity:0.98;
+    /* Central card that keeps everything centered and responsive */
+    .card{
+      width:min(980px,96vw);
       background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      box-shadow: 0 6px 18px rgba(2,6,3,0.45);
-
-      height:100%; /* fills the grid middle row */
-      overflow:auto; /* internal scrolling */
-      -webkit-overflow-scrolling: touch;
-      padding-right:12px;
+      border-radius:14px;padding:22px;box-shadow:0 18px 50px rgba(0,0,0,0.65);backdrop-filter:blur(6px);
+      display:grid;grid-template-rows:auto 1fr auto;gap:18px;align-items:center;
     }
-    .changelog ul{padding-left:18px;margin:8px 0}
 
-    .changelog::-webkit-scrollbar{ width:8px; height:8px }
-    .changelog::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.06); border-radius:8px; border: 1px solid rgba(0,0,0,0.15); }
-    .changelog::-webkit-scrollbar-track{ background: transparent }
+    /* Title */
+    .title-wrap{display:flex;align-items:center;justify-content:center;gap:12px}
+    .site-title img{max-width:88vw;height:auto;width:auto;max-height:36vh;display:block;object-fit:contain}
 
-    main.site-main{flex:0 0 auto;display:flex;align-items:center;justify-content:center;padding:18px 24px;z-index:10}
+    /* Changelog: visible, read-only, scrolls inside */
+    .changelog{
+      color:rgba(223,255,230,0.98);font-size:1rem;line-height:1.45;padding:12px;border-radius:10px;
+      background:linear-gradient(180deg, rgba(0,0,0,0.16), rgba(0,0,0,0.08));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,0.02);
+      overflow:auto;max-height:34vh;
+    }
+    .changelog strong{display:block;margin-bottom:8px;font-size:1.05rem}
+    .changelog ul{padding-left:18px;margin-top:6px}
 
-    /* Download button */
-    .download-wrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+    /* Centered area for download */
+    .download-area{display:flex;flex-direction:column;align-items:center;gap:10px;padding-bottom:6px}
     .download-btn{
-      display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-weight:700;padding:14px 34px;border-radius:14px;font-size:1.15rem;min-width:220px;background:linear-gradient(180deg, rgba(38,195,85,0.98) 0%, rgba(22,150,62,0.98) 100%);color:#ffffff;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,opacity .12s ease;border-radius:12px;position:relative;z-index:1;outline:6px solid #ffffff;box-shadow: 0 10px 28px rgba(8,20,10,0.6), 0 0 0 2px #000;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1;
+      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+      appearance:none;border:0;cursor:pointer;user-select:none;
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:14px 36px;border-radius:14px;font-weight:800;font-size:1.15rem;min-width:220px;
+      color:#fff;background:linear-gradient(180deg,#2fc45a 0%,#1da142 100%);
+      box-shadow:0 18px 40px rgba(8,20,10,0.55), 0 0 0 2px #000 inset;outline:6px solid #fff;
+      position:relative;z-index:2;transition:transform .14s ease,box-shadow .14s ease;
     }
-    .download-btn .btn-text{position:relative;z-index:2;color:#ffffff;font-weight:800;letter-spacing:0.2px;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;padding:6px 0;display:inline-block}
-
-    @media (max-width:640px){ header.site-header{padding-top:12px} header.site-header .site-title img{max-height:24vh} .download-btn{padding:12px 20px;font-size:1rem;min-width:160px;border-radius:12px;outline-width:5px;box-shadow:0 8px 22px rgba(8,20,10,0.5), 0 0 0 1.5px #000} .changelog{font-size:0.9rem} }
-
-    .download-btn:active{transform:translateY(1px) scale(.998)}
+    .download-btn:active{transform:translateY(1px) scale(.997)}
     .download-btn:focus{outline:none;box-shadow:0 0 0 10px rgba(28,145,76,0.12)}
 
-    .btn-sub{display:block;text-align:center;font-size:.86rem;opacity:.86;color:rgba(223,255,230,0.9)}
+    .btn-text{position:relative;z-index:3;color:#fff;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000}
+    .btn-sub{font-size:.88rem;opacity:.88;color:rgba(223,255,230,0.9)}
+
+    /* Responsive tweaks */
+    @media (max-width:720px){
+      .card{padding:14px}
+      .site-title img{max-height:26vh}
+      .download-btn{padding:12px 22px;font-size:1rem;min-width:180px}
+      .changelog{max-height:30vh;font-size:0.95rem}
+    }
+
+    @media (min-width:1400px){
+      .site-title img{max-height:40vh}
+      .changelog{max-height:40vh}
+    }
 
     /* Fallback overlay */
-    .fallback-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,5,2,0.6);z-index:9999}
-    .fallback-card{background:linear-gradient(180deg, #041008, #021006);border-radius:12px;padding:18px 20px;max-width:92vw;color:#dfffe6;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.6)}
-    .fallback-card a{display:inline-block;margin-top:10px;padding:10px 18px;border-radius:10px;background:#0b5f2b;color:#fff;text-decoration:none;border:2px solid #fff}
+    .fallback-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,5,2,0.66);z-index:9999}
+    .fallback-card{background:linear-gradient(180deg,#041008,#021006);padding:18px;border-radius:12px;color:#dfffe6;max-width:92vw;text-align:center}
+    .fallback-card a{display:inline-block;margin-top:12px;padding:10px 16px;border-radius:8px;background:#0b5f2b;color:#fff;text-decoration:none;border:2px solid #fff}
 
-    /* Toast */
-    .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:28px;padding:10px 14px;border-radius:10px;background:rgba(0,0,0,0.6);color:#dfffe6;font-size:.95rem;z-index:50;display:none}
-
-    /* Animations */
-    @keyframes slideDownIn{0%{opacity:0;transform:translateY(-30px)}100%{opacity:1;transform:translateY(0)}}
-    @keyframes slideUpIn{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
-    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.025)}100%{transform:scale(1)}}
-
-    a:focus{outline-offset:4px}
+    /* Simple toast */
+    .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:26px;padding:8px 12px;border-radius:9px;background:rgba(0,0,0,0.6);color:#dfffe6;z-index:60;display:none}
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-title" role="img" aria-label="Título del sitio">
-      <img src="title.png" alt="Título" width="1088" height="960">
+  <div class="card" role="main" aria-label="Panel principal de descarga">
+    <div class="title-wrap">
+      <div class="site-title" aria-hidden="false">
+        <img src="title.png" alt="Título del juego">
+      </div>
     </div>
-  </header>
 
-  <section class="changelog" id="changelog" aria-label="Registro de cambios">
-    <strong>Registro de cambios — Versión 1.0</strong>
-    <ul>
-      <li>Los árboles vecinos se incendian/apagan correctamente con el encendedor/balde de agua.</li>
-      <li>Mejora en la estabilidad y la suavidad de los movimientos del nivel.</li>
-      <li>Panel de "Cómo jugar" actualizado (Optimización necesaria).</li>
-      <li>Precios de vidas y boosts actualizados.</li>
-      <li>Temporizador de vidas eliminado.</li>
-      <li>Superposición de elementos parcheado temporalmente</li>
-      <li>Anuncios congelados parcheado temporalmente</li>
-      <li>Al salir del juego durante un nivel o el panel de derrota, al volver a iniciar se mostrará el último nivel jugado.</li>
-    </ul>
-  </section>
+    <div class="changelog" id="changelog" aria-label="Registro de cambios">
+      <strong>Registro de cambios — Versión 1.0</strong>
+      <ul>
+        <li>Los árboles vecinos se incendian/apagan correctamente con el encendedor/balde de agua.</li>
+        <li>Mejora en la estabilidad y la suavidad de los movimientos del nivel.</li>
+        <li>Panel de "Cómo jugar" actualizado (Optimización necesaria).</li>
+        <li>Precios de vidas y boosts actualizados.</li>
+        <li>Temporizador de vidas eliminado.</li>
+        <li>Superposición de elementos parcheado temporalmente</li>
+        <li>Anuncios congelados parcheado temporalmente</li>
+        <li>Al salir del juego durante un nivel o el panel de derrota, al volver a iniciar se mostrará el último nivel jugado.</li>
+      </ul>
+    </div>
 
-  <main class="site-main">
-    <div class="download-wrap" style="text-align:center">
-      <a id="downloadLink" class="download-btn" href="#" aria-label="Descargar Los 5 Elementos versión 1.0 (Google Drive)">
+    <div class="download-area">
+      <button id="downloadBtn" class="download-btn" aria-label="Descargar Los 5 Elementos.apk">
         <span class="btn-text">Descargar V1.0</span>
-      </a>
+      </button>
       <div class="btn-sub">Archivo: <strong>Los 5 Elementos.apk</strong></div>
     </div>
-  </main>
-
-  <div class="bg-overlay" aria-hidden="true"></div>
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </div>
 
   <div id="fallback" class="fallback-overlay" role="dialog" aria-hidden="true">
     <div class="fallback-card">
@@ -138,72 +119,67 @@
     </div>
   </div>
 
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
   <script>
     (function(){
-      const link = document.getElementById('downloadLink');
+      const btn = document.getElementById('downloadBtn');
       const toast = document.getElementById('toast');
       const fallback = document.getElementById('fallback');
       const fallbackLink = document.getElementById('fallbackLink');
 
       const DRIVE_ID = '1KgQhylKeJ4A_bazb6IAUrQyET86mZiYw';
-      const DRIVE_DIRECT = `https://drive.google.com/uc?export=download&id=${DRIVE_ID}`;
       const DRIVE_VIEW = `https://drive.google.com/file/d/${DRIVE_ID}/view?usp=sharing`;
 
-      function showToast(text, timeout=2400){
-        toast.textContent = text; toast.style.display = 'block';
-        clearTimeout(toast._t);
-        toast._t = setTimeout(()=> toast.style.display = 'none', timeout);
+      let opening = false; // prevents double-open
+
+      function showToast(text, time=2000){
+        toast.textContent = text; toast.style.display='block'; clearTimeout(toast._t);
+        toast._t = setTimeout(()=> toast.style.display='none', time);
       }
 
       function showFallback(url){
-        fallbackLink.href = url || DRIVE_VIEW;
-        fallback.style.display = 'flex';
-        fallback.setAttribute('aria-hidden','false');
+        fallbackLink.href = url || DRIVE_VIEW; fallback.style.display='flex'; fallback.setAttribute('aria-hidden','false');
       }
 
-      function openDrive(){
-        // try direct download first
-        const opened = window.open(DRIVE_DIRECT, '_blank', 'noopener');
-        if(opened) return true;
-        const opened2 = window.open(DRIVE_VIEW, '_blank', 'noopener');
-        if(opened2) return true;
-        return false;
+      function openInNewTab(url){
+        // try to open once and return boolean
+        try{
+          const w = window.open(url, '_blank', 'noopener');
+          return !!w;
+        }catch(e){
+          return false;
+        }
       }
 
-      link.addEventListener('click', function(e){
+      btn.addEventListener('click', function(e){
         e.preventDefault();
-        // if user used modifier keys let window.open handle similarly
-        if(e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1){
-          openDrive();
-          return;
-        }
+        if(opening) return; // already trying
+        opening = true;
 
-        const ok = openDrive();
-        if(ok){
-          showToast('Se abrió Google Drive en una pestaña; la descarga debería comenzar allí.');
-          return;
-        }
+        // first attempt: open the view link in a new tab (single action)
+        const ok = openInNewTab(DRIVE_VIEW);
+        if(ok){ showToast('Se abrió Google Drive en una pestaña nueva.'); opening = false; return; }
 
+        // fallback: popup blocked -> show overlay with manual link
         showToast('Popup bloqueado — por favor, abre el enlace manualmente.');
-        showFallback(DRIVE_DIRECT);
+        showFallback(DRIVE_VIEW);
+        opening = false;
       });
 
-      link.addEventListener('keydown', function(e){
-        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openDrive(); }
-      });
+      // keyboard accessibility
+      btn.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); btn.click(); } });
 
-      // clicking outside fallback closes it
-      fallback.addEventListener('click', (ev)=>{ if(ev.target === fallback){ fallback.style.display='none'; fallback.setAttribute('aria-hidden','true'); } });
+      // close fallback when clicking outside
+      fallback.addEventListener('click', function(ev){ if(ev.target===fallback){ fallback.style.display='none'; fallback.setAttribute('aria-hidden','true'); } });
 
-    })();
-  </script>
-</body>
-</html>  });
-
+      // set fallback link
+      fallbackLink.href = DRIVE_VIEW;
     })();
   </script>
 </body>
 </html>
+
 
 
 
