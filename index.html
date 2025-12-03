@@ -44,16 +44,36 @@
       filter:drop-shadow(0 6px 10px rgba(0,0,0,0.6));
     }
 
-    /* Changelog area below the title - editable in-browser (contenteditable) */
-    .changelog{
-      margin:10px auto 0;max-width:88vw;text-align:left;color:rgba(223,255,230,0.95);
-      font-size:0.95rem;line-height:1.35;padding:8px 12px;border-radius:8px;opacity:0.98;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      box-shadow: 0 6px 18px rgba(2,6,3,0.45);
-      max-height:16vh;overflow:hidden; /* ensure no scrollbar in page */
-    }
-    .changelog ul{padding-left:18px;margin:6px 0}
-    .changelog:focus{outline:2px dashed rgba(255,255,255,0.08)}
+    /* Reemplaza tu .changelog actual por esto */
+.changelog{
+  margin:10px auto 0;
+  max-width:88vw;
+  text-align:left;
+  color:rgba(223,255,230,0.95);
+  font-size:0.95rem;
+  line-height:1.35;
+  padding:8px 12px;
+  border-radius:8px;
+  opacity:0.98;
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  box-shadow: 0 6px 18px rgba(2,6,3,0.45);
+
+  /* aquí está el cambio: altura limitada pero con scroll interno */
+  max-height:16vh;       /* ajusta esta altura si quieres mostrar más/menos */
+  overflow:auto;         /* permite desplazamiento sólo dentro de la caja */
+  -webkit-overflow-scrolling: touch; /* scroll suave en iOS */
+  padding-right:12px;    /* espacio para la barra de scroll en navegadores */
+}
+
+/* Opcional: estilo muy sutil de la scrollbar en navegadores WebKit */
+.changelog::-webkit-scrollbar{ width:8px; height:8px }
+.changelog::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,0.06);
+  border-radius:8px;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+.changelog::-webkit-scrollbar-track{ background: transparent }
+
 
     main.site-main{flex:1 1 auto;display:flex;align-items:center;justify-content:center;padding:18px 24px;z-index:10}
 
@@ -238,5 +258,6 @@
   </script>
 </body>
 </html>
+
 
 
